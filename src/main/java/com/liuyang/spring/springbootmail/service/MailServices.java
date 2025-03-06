@@ -2,6 +2,7 @@ package com.liuyang.spring.springbootmail.service;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,7 +64,8 @@ public class MailServices {
     }
 
 
-    public void PostResourceMail(String mailContent){
+    public void PostResourceMail(String mailContent,String mailSubject){
+
 
         // 创建一个邮件消息
         MimeMessage message = javaMailSender.createMimeMessage();
@@ -77,7 +79,11 @@ public class MailServices {
             // 收件人邮箱
             helper.setTo(sendTo);
             // 邮件标题
-            helper.setSubject(sendSubject);
+            if(StringUtils.isBlank(mailSubject)) {
+                helper.setSubject(sendSubject);
+            }else{
+                helper.setSubject(mailSubject);
+            }
             // 邮件正文，第二个参数表示是否是HTML正文
             helper.setText(mailContent, true);
 
